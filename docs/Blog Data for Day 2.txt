@@ -1,0 +1,96 @@
+Here’s the markdown version of the blog post for Day 2:
+
+```markdown
+# Day 2: Backend-Frontend Integration and Introduction to React
+
+## Overview
+
+On Day 2, we successfully integrated our Flask backend with the React frontend. We set up API endpoints in Flask and made HTTP requests from React to fetch product data. Along the way, we encountered and resolved a CORS issue, which is common when connecting frontends and backends running on different ports. This day was crucial as it laid the foundation for how our frontend and backend will communicate throughout the project.
+
+## Steps Completed
+
+### 1. **Setting Up Flask API Endpoints**
+
+We started by creating an API endpoint in Flask to serve product data. The Flask application was configured to handle CORS (Cross-Origin Resource Sharing) issues by installing and using the `Flask-CORS` package.
+
+```python
+from flask import Flask, jsonify
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/api/products', methods=['GET'])
+def getProducts():
+    products = [
+        {"id": 1, "name": "Product 1", "price": 29.99},
+        {"id": 2, "name": "Product 2", "price": 39.99},
+        {"id": 3, "name": "Product 3", "price": 49.99}
+    ]
+    return jsonify(products)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+**Explanation:**
+- **CORS(app):** Enabled CORS for all routes in our Flask application to allow the frontend (React) to communicate with the backend.
+
+### 2. **Integrating Flask with React**
+
+We used React's `useEffect` and `useState` hooks to fetch the product data from the Flask API and display it in the frontend.
+
+```javascript
+import React, { useState, useEffect } from 'react';
+
+function App() {
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/products')
+      .then(response => response.json())
+      .then(data => setProductList(data))
+      .catch(error => console.error('Error fetching products:', error));
+  }, []);
+
+  return (
+    <div>
+      <h1>Product List</h1>
+      <ul>
+        {productList.map(product => (
+          <li key={product.id}>{product.name}: ${product.price}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
+```
+
+**Key Concepts Explained:**
+- **`useState([])`:** Initializes the `productList` state as an empty array.
+- **`useEffect()`:** Runs after the component mounts and fetches product data from the Flask API.
+- **CORS Error Resolution:** We handled the CORS error by enabling CORS in Flask, which allowed the React frontend to successfully fetch data from the Flask backend.
+
+### 3. **Troubleshooting Common Issues**
+
+During the integration, we faced a couple of common issues:
+- **CORS Policy Error:** This was resolved by using the `Flask-CORS` package.
+- **Incorrect Fetch URL:** The URL in the fetch request was corrected to ensure the React app correctly communicates with the Flask backend.
+
+### 4. **React Fundamentals**
+
+To solidify our understanding, we also explored some fundamental React concepts:
+- **Hooks:** We discussed `useState` and `useEffect`, which are essential for managing state and side-effects in functional components.
+- **Arrow Functions (`=>`)**: We explored the arrow function syntax used in modern JavaScript.
+- **`key` Prop in React:** The importance of the `key` prop when rendering lists in React was emphasized to help React efficiently manage updates.
+
+## Conclusion
+
+Day 2 was all about integrating the backend and frontend, understanding the basics of React, and resolving issues that arose during the process. The successful integration of Flask and React has set a strong foundation for the dynamic functionality we will build in the upcoming days.
+
+Stay tuned for Day 3, where we'll dive deeper into feature development and continue expanding our full-stack e-commerce application!
+```
+
+This post captures the key points from Day 2, including the integration process, troubleshooting, and fundamental concepts learned. Let me know if you need any further adjustments!
